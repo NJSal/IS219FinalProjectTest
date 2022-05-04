@@ -92,7 +92,7 @@ def location_upload():
 @login_required
 def edit_location(location_id):
     location = Location.query.get(location_id)
-    form = loc_edit_form()
+    form = loc_edit_form(obj=location)
     if form.validate_on_submit():
         location.population = form.population.data
         db.session.add(location)
