@@ -23,8 +23,10 @@ def browse_locations(page):
     per_page = 10
     pagination = Location.query.paginate(page, per_page, error_out=False)
     data = pagination.items
+    edit_url = ('map.edit_location', [('location_id', ':id')])
+
     try:
-        return render_template('browse_locations.html',data=data,pagination=pagination)
+        return render_template('browse_locations.html',data=data,pagination=pagination,Location=Location, edit_url=edit_url)
     except TemplateNotFound:
         abort(404)
 
@@ -88,7 +90,7 @@ def location_upload():
 @login_required
 def edit_location(location_id):
     location = Location.query.get(location_id)
-    form = loc_edit_form(obj=location)
+    form = loc_edit_form()
     if form.validate_on_submit():
         location.population = form.population.data
         db.session.add(location)
