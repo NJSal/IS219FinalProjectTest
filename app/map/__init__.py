@@ -3,9 +3,11 @@ import json
 import logging
 import os
 
-from flask import Blueprint, render_template, abort, url_for, current_app, jsonify
+from flask import Blueprint, render_template, abort, url_for, flash, current_app, jsonify
 from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
+
+from app.map.forms import loc_edit_form
 
 from app.db import db
 from app.db.models import Location
@@ -23,8 +25,10 @@ def browse_locations(page):
     per_page = 10
     pagination = Location.query.paginate(page, per_page, error_out=False)
     data = pagination.items
+    edit_url = ('map.edit_location', [('location_id', ':id')])
+
     try:
-        return render_template('browse_locations.html',data=data,pagination=pagination)
+        return render_template('browse_locations.html',data=data,pagination=pagination,Location=Location, edit_url=edit_url)
     except TemplateNotFound:
         abort(404)
 
@@ -83,3 +87,17 @@ def location_upload():
         return render_template('upload_locations.html', form=form)
     except TemplateNotFound:
         abort(404)
+
+@map.route('/locations/<int:location_id>/edit', methods=['POST', 'GET'])
+@login_required
+def edit_location(location_id):
+    location = Location.query.get(location_id)
+    form = loc_edit_form(obj=location)
+    if form.validate_on_submit():
+        location.population = form.population.data
+        db.session.add(location)
+        db.session.commit()
+        flash('Location Edited Successfully', 'success')
+        current_app.logger.info("edited a location")
+        return redirect(url_for('map.browse_locations'))
+    return render_template('location_edit.html', form=form)
