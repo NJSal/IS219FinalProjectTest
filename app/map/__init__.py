@@ -3,7 +3,7 @@ import json
 import logging
 import os
 
-from flask import Blueprint, render_template, abort, url_for, current_app, jsonify
+from flask import Blueprint, render_template, abort, url_for, flash, current_app, jsonify
 from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
 
