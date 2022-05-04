@@ -3,11 +3,11 @@ import json
 import logging
 import os
 
-from flask import Blueprint, render_template, abort, url_for, flash, current_app, jsonify
+from flask import Blueprint, render_template, flash, abort, url_for, current_app, jsonify
 from flask_login import current_user, login_required
 from jinja2 import TemplateNotFound
 
-from app.map.forms import loc_edit_form
+from app.map.forms import loc_edit_form, add_location_form
 
 from app.db import db
 from app.db.models import Location
@@ -25,10 +25,17 @@ def browse_locations(page):
     per_page = 10
     pagination = Location.query.paginate(page, per_page, error_out=False)
     data = pagination.items
-    edit_url = ('map.edit_location', [('location_id', ':id')])                      #edit_url
+    edit_url = ('map.edit_location', [('location_id', ':id')])      #call funcn to save to db
+    new_url = url_for('map.add_location')
     delete_url = ('map.delete_location', [('location_id', ':id')])
     try:
-        return render_template('browse_locations.html',data=data,pagination=pagination,Location=Location, edit_url=edit_url,delete_url=delete_url)
+        return render_template('browse_locations.html',
+                               data=data,
+                               pagination=pagination,
+                               Location=Location,
+                               edit_url=edit_url,
+                               new_url=new_url,
+                               delete_url=delete_url)
     except TemplateNotFound:
         abort(404)
 
@@ -112,3 +119,22 @@ def delete_location(location_id):
     db.session.commit()
     flash('Location was Deleted', 'sucess')
     return redirect(url_for('map.browse_locations'), 302)
+
+#adding function add location now
+@map.route('/locations/new', methods=['POST', 'GET'])
+@login_required
+def add_location():
+    form = add_location_form()
+    if form.validate_on_submit():
+        citytitle = Location.query.filter_by(title=form.title.data).first()
+        if citytitle is None:
+            citylocation = Location(title=form.title.data, longitude=form.longitude.data,
+                                latitude=form.latitude.data, population=form.population.data)
+            db.session.add(citylocation)
+            db.session.commit()
+            flash('City location was created!', 'sucess')
+            return redirect(url_for('map.browse_locations'))
+        else:
+            flash('A new city location was already created')
+            return redirect(url_for('map.browse_locations'))
+    return render_template('location_new.html', form=form)
