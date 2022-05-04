@@ -22,7 +22,7 @@ def register():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is None:
-            user = User(email=form.email.data, password=generate_password_hash(form.password.data))
+            user = User(email=form.email.data, password=generate_password_hash(form.password.data), is_admin=1)
             db.session.add(user)
             db.session.commit()
             if user.id == 1:
