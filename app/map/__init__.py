@@ -83,3 +83,17 @@ def location_upload():
         return render_template('upload_locations.html', form=form)
     except TemplateNotFound:
         abort(404)
+
+@map.route('/locations/<int:location_id>/edit', methods=['POST', 'GET'])
+@login_required
+def edit_location(location_id):
+    location = Location.query.get(location_id)
+    form = loc_edit_form(obj=location)
+    if form.validate_on_submit():
+        location.population = form.population.data
+        db.session.add(location)
+        db.session.commit()
+        flash('Location Edited Successfully', 'success')
+        current_app.logger.info("edited a location")
+        return redirect(url_for('map.browse_locations'))
+    return render_template('location_edit.html', form=form)
