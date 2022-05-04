@@ -3,7 +3,7 @@ from wtforms import validators
 from wtforms.fields import *
 
 class loc_edit_form(FlaskForm):
-    population = TextAreaField('population', description="Please add the info for population")
+    population = TextAreaField('Population', description="Please add the info for population")
 
     submit = SubmitField()
 
