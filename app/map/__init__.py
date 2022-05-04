@@ -25,10 +25,10 @@ def browse_locations(page):
     per_page = 10
     pagination = Location.query.paginate(page, per_page, error_out=False)
     data = pagination.items
-    edit_url = ('map.edit_location', [('location_id', ':id')])
-
+    edit_url = ('map.edit_location', [('location_id', ':id')])                      #edit_url
+    delete_url = ('map.delete_location', [('location_id', ':id')])
     try:
-        return render_template('browse_locations.html',data=data,pagination=pagination,Location=Location, edit_url=edit_url)
+        return render_template('browse_locations.html',data=data,pagination=pagination,Location=Location, edit_url=edit_url,delete_url=delete_url)
     except TemplateNotFound:
         abort(404)
 
@@ -101,3 +101,14 @@ def edit_location(location_id):
         current_app.logger.info("edited a location")
         return redirect(url_for('map.browse_locations'))
     return render_template('location_edit.html', form=form)
+
+@map.route('/locations/<int:location_id>/delete', methods=['POST'])
+@login_required
+def delete_location(location_id):
+    location_id = Location.query.get(location_id)
+    if location_id == 2:
+        flash("id = 2 location deleted!")
+    db.session.delete(location_id)
+    db.session.commit()
+    flash('Location was Deleted', 'sucess')
+    return redirect(url_for('map.browse_locations'), 302)
