@@ -1,4 +1,5 @@
 """A simple flask web app"""
+import logging
 import os
 
 import flask_login
@@ -8,7 +9,6 @@ from flask_cors import CORS
 from flask_mail import Mail
 from flask_wtf.csrf import CSRFProtect
 
-from app.auth import auth
 from app.auth import auth
 from app.cli import create_database
 from app.context_processors import utility_text_processors
@@ -35,7 +35,8 @@ def create_app():
         app.config.from_object("app.config.DevelopmentConfig")
     elif os.environ.get("FLASK_ENV") == "testing":
         app.config.from_object("app.config.TestingConfig")
-
+    app.mail = Mail(app)
+    
     # https://flask-login.readthedocs.io/en/latest/  <-login manager
     login_manager.init_app(app)
     login_manager.login_view = "auth.login"
