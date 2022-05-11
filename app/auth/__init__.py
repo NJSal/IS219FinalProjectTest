@@ -29,7 +29,14 @@ def register():
                 user.is_admin = 1
                 db.session.add(user)
                 db.session.commit()
+            msg = Message("Welcome to the site",
+                          sender="bonjournoplantsnnj@gmail.com",
+                          recipients=[user.email])
+            msg.body = "Welcome to the site"
+
+            current_app.mail.send(msg)
             flash('Congratulations, you are now a registered user!', "success")
+
             return redirect(url_for('auth.login'), 302)
         else:
             flash('Already Registered')
