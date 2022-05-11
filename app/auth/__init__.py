@@ -10,6 +10,7 @@ from app.auth.decorators import admin_required
 from app.auth.forms import login_form, register_form, profile_form, security_form, user_edit_form, create_user_form
 from app.db import db
 from app.db.models import User, Location, location_user
+from flask_mail import Message
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
