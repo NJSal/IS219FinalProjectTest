@@ -1,11 +1,10 @@
 # Project Setup
 
-[![Production Workflow 1](https://github.com/NJSal/IS219FinalProject/actions/workflows/prod.yml/badge.svg)](https://github.com/NJSal/IS219FinalProject/actions/workflows/prod.yml)
-* [Production Deployment](https://is219p4-22prod.herokuapp.com/)
+[![Production Workflow 1](https://github.com/NJSal/IS219FinalProjectTest/actions/workflows/prod.yml/badge.svg)](https://github.com/NJSal/IS219FinalProjectTest/actions/workflows/prod.yml)
+* [Production Deployment](https://is219p4-22testprod.herokuapp.com/)
 
-
-[![Development Workflow 3.8](https://github.com/NJSal/IS219FinalProject/actions/workflows/dev.yml/badge.svg)](https://github.com/NJSal/IS219FinalProject/actions/workflows/dev.yml)
-* [Developmental Deployment](https://is219p4-22dev.herokuapp.com/)
+[![Development Workflow 3.8](https://github.com/NJSal/IS219FinalProjectTest/actions/workflows/dev.yml/badge.svg)](https://github.com/NJSal/IS219FinalProjectTest/actions/workflows/dev.yml)
+* [Developmental Deployment](https://is219p4-22testdev.herokuapp.com/)
 
 ## Setting up CI/CD
 
