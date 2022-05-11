@@ -92,12 +92,12 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.email
 
-class Product(db.Mode, SerializerMixin):
+class Product(db.Model, SerializerMixin):
     __tablename__ = 'product'
     id = db.Column(db.Integer, primary_key=True)
     productname = db.Column(db.String(100), nullable=False)
     price = db.Column(db.String(50), nullable=False)
-    productpic = db.Column(db.Txt, nullable=False, unique=True)
+    productpic = db.Column(db.Text, nullable=False, unique=True)
     vendorname = db.Column(db.String(100), nullable=False)
     vendoremail = db.Column(db.String(100), nullable=False, unique=True)
 
@@ -106,7 +106,7 @@ def __init__(self, productname, price, productpic, vendorname, vendoremail):
         self.price = price
         self.productpic = productpic
         self.vendorname = vendorname
-        self.vendorprice = vendorprice
+        self.vendoremail = vendoremail
 
         def serialize(self):
             return{
