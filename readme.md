@@ -7,6 +7,7 @@
 * [Developmental Deployment](https://is219p4-22testdev.herokuapp.com/)
 
 ## Setting up CI/CD
+This is a user registration/login app, where users receive an email confirmation of account creation using the sendgrid api 
 
 The result of this will be that when you create a pull request to merge a branch to master, it will deploy to your
 heroku development app/dyno and when you merge or push to master on github, it will deploy the app to the production heroku
