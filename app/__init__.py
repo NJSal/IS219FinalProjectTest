@@ -10,7 +10,7 @@ from flask_mail import Mail
 from flask_wtf.csrf import CSRFProtect
 
 from app.auth import auth
-from app.cli import create_database
+from app.cli import create_database, create_log_folder
 from app.context_processors import utility_text_processors
 from app.db import database
 from app.db import db
@@ -18,6 +18,7 @@ from app.db.models import User
 from app.error_handlers import error_handlers
 from app.logging_config import log_con, LOGGING_CONFIG
 from app.map import map
+from app.product import product
 from app.simple_pages import simple_pages
 from app.songs import songs
 
@@ -54,9 +55,11 @@ def create_app():
     app.register_blueprint(error_handlers)
     app.register_blueprint(songs)
     app.register_blueprint(map)
+    app.register_blueprint(product)
     app.context_processor(utility_text_processors)
     # add command function to cli commands
     app.cli.add_command(create_database)
+    app.cli.add_command(create_log_folder)
     db.init_app(app)
     api_v1_cors_config = {
     "methods": ["OPTIONS", "GET", "POST"],
